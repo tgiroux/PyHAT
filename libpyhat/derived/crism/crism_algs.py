@@ -85,6 +85,26 @@ def bd530(data, use_kernels = True, **kwargs):
     return generic_func(data, wv, func = cf.bd_func1, kernels = kernels, pass_wvs = True, **kwargs)
 
 
+def bd530_2(data, **kwargs):
+    """
+    NAME: BD530_2
+    PARAMETER: 0.53 micron band depth
+    FORMULATION: 1 - (R530/(a*R614+b*R440))
+    RATIONALE: fine-grained crystalline hermatite
+
+    Parameters
+    ----------
+    data : ndarray
+           (n,m,p) array
+
+    Returns
+    -------
+     : ndarray
+       the processed ndarray
+    """
+
+    return bd530(data, True)
+
 def sh600(data, use_kernels = True, **kwargs):
     """
     NAME: SH600
@@ -114,6 +134,26 @@ def sh600(data, use_kernels = True, **kwargs):
         kernels[716] = 3
 
     return generic_func(data, wv, func = cf.sh_func, pass_wvs = True, kernels = kernels, **kwargs)
+
+
+def sh600_2(data, **kwargs):
+    """
+    NAME: SH600_2
+    PARAMETER: 0.60 micron shoulder height
+    FORMULATION: 1 - (a * R533 + b * R716) / R600
+    RATIONALE: select ferric minerals
+
+    Parameters
+    ----------
+    data : ndarray
+           (n,m,p) array
+
+    Returns
+    -------
+     : ndarray
+       the processed ndarray
+    """
+    return sh600(data, True)
 
 
 def sh770(data, **kwargs):
@@ -234,6 +274,24 @@ def bd920(data, use_kernels = True, **kwargs):
 
     return generic_func(data, wv, func = cf.bd_func2, pass_wvs = True, kernels = kernels, **kwargs)
 
+def bd920_2(data, **kwargs):
+    """
+    NAME: BD920
+    PARAMETER: 0.92 micron band depth
+    FORMULATION: 1 - ( R920 / (a * R807 + b * R984) )
+    RATIONALE: Crystalline ferric minerals and LCP
+
+    Parameters
+    ----------
+    data : ndarray
+           (n,m,p) array
+
+    Returns
+    -------
+     : ndarray
+       the processed ndarray
+    """
+    return bd920(data, True)
 
 def rpeak1(data, **kwargs):
     """
@@ -609,13 +667,33 @@ def bd1500(data, use_kernels = True, **kwargs):
     if use_kernels:
         wv = [1367, 1525, 1808]
         kernels = {1367: 5,
-                          1525: 11,
-                          1808: 5}
+                   1525: 11,
+                   1808: 5}
 
         return generic_func(data, wv, func = cf.bd_func2, pass_wvs = True, kernels = kernels, **kwargs)
 
     wv = [1367, 1505, 1558, 1808]
     return generic_func(data, wv, func = cf.bd1500_func, **kwargs)
+
+
+def bd1500_2(data, **kwargs):
+    """
+    NAME: BD1500_2
+    PARAMETER: 1.5 micron H2O ice band depth
+    FORMULATION: 1.0 - (R1525 / (b * R1808 + a * R1367))
+    RATIONALE: H2O ice on surface or in atmosphere
+
+    Parameters
+    ----------
+    data : ndarray
+           (n,m,p) array
+
+    Returns
+    -------
+     : ndarray
+       the processed ndarray
+    """
+    return bd1500(data, True)
 
 
 def icer1(data, **kwargs):
@@ -846,13 +924,34 @@ def bd2100(data, use_kernels = True, **kwargs):
     if use_kernels:
         wv = [1930, 2132, 2250]
         kernels = {1930: 3,
-                          2132: 5,
-                          2250: 3}
+                   2132: 5,
+                   2250: 3}
 
         return generic_func(data, wv, func = cf.bd_func2, pass_wvs = True, kernels = kernels, **kwargs)
 
     wv = [1930, 2120, 2130, 2250]
     return generic_func(data, wv, func = cf.bd2100_func, pass_wvs=True, **kwargs)
+
+
+def bd2100_2(data, **kwargs):
+    """
+    NAME: BD2100
+    PARAMETER: 2.1 micron band depth
+    FORMULATION: 1 - ( R2132 / (a * R1930 + b * R2250) )
+    RATIONALE: H20 in monohydrated sulfates
+
+    Parameters
+    ----------
+    data : ndarray
+           (n,m,p) array
+
+    Returns
+    -------
+     : ndarray
+       the processed ndarray
+    """
+    return bd2100(data, True)
+
 
 def bd2165(data, **kwargs):
     """
@@ -990,6 +1089,27 @@ def bd2210(data, use_kernels = True, **kwargs):
         kernels[2250] = 5
 
     return generic_func(data, wv, func = cf.bd_func2, pass_wvs = True, kernels = kernels, **kwargs)
+
+
+def bd2210_2(data, **kwargs):
+    """
+    NAME: BD2210_2
+    PARAMETER: 2.21 micron band depth
+    FORMULATION: 1 - ( R2210 / (a*R2165+b*R2250) )
+    RATIONALE: Al-OH minerals: monohydrated minerals
+
+    Parameters
+    ----------
+    data : ndarray
+           (n,m,p) array
+
+    Returns
+    -------
+     : ndarray
+       the processed ndarray
+    """
+    return bd2210(data, True)
+
 
 def d2200(data, **kwargs):
     """
