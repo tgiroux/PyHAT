@@ -346,6 +346,8 @@ def bdi1000IR(data, **kwargs):
 
     raise NotImplementedError
 
+def r1300(data,**kwargs):
+    raise NotImplementedError
 
 def r1330(data, **kwargs):
     """
@@ -1917,3 +1919,369 @@ def r3920(data, **kwargs):
     kernels = {3920: 5}
 
     return generic_func(data, wv, func = (lambda x: x[0]), kernels = kernels, **kwargs)
+
+
+# Browse Products
+
+def bp_TRU(data, **kwargs):
+    """
+    Name: TRU
+    Type: VNIR
+    RGB Components: R600, R530, R440
+    Significance: An enhanced true color representation of the scene
+
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list 
+       contains processed RGB components as [R, G, B]
+    """
+    return [r600(data), r530(data), r440(data)]
+
+def bp_VNA(data, **kwargs):
+    """
+    Name: VNA
+    Type: VNIR
+    RGB Components: R770, R770, R770
+    Significance: Shows photometrically corrected I/F at 770nm
+
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list 
+       contains processed RGB components as [R, G, B]
+    """
+    component = r770(data)
+    return [component, component, component]
+
+def bp_FEM(data, **kwargs):
+    """
+    Name: FEM
+    Type: VNIR
+    RGB Components: BD530_2, SH600_2, BDI1000VIS
+    Significance: Shows information related to Fe minerals and represents \
+                  the curvature in the visible and near-infrared wavelengths \
+                  related to iron
+
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list 
+       contains processed RGB components as [R, G, B]
+    """
+    return [bd530_2(data), sh600_2(data), bdi1000VIS(data)]
+
+def bp_FM2(data, **kwargs):
+    """
+    Name: FM2
+    Type: VNIR
+    RGB Components: BD530_2, BD920_2, BDI1000VIS
+    Significance: Shows complementary information related to Fe minerals
+
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list 
+       contains processed RGB components as [R, G, B]
+    """
+    return [bd530_2(data), bd920_2(data), bdi1000VIS(data)]
+
+
+def bp_TAN(data, **kwargs):
+    """
+    Name: TAN
+    Type: Joined
+    RGB Components: R2529, IRA, R770
+    Significance: An enhanced visible to infrared false color \
+                    representation of the scene
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list 
+       contains processed RGB components as [R, G, B]
+    """
+    return [r2529(data), bp_IRA(data), r770(data)]
+
+
+def bp_IRA(data, **kwargs):
+    """
+    Name: IRA
+    Type: IR
+    RGB Components: R1300, R1300, R1300
+    Significance: Correlate spectral variations with morphology
+
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list 
+       contains processed RGB components as [R, G, B]
+    """
+    component = r1300(data)
+    return [component, component, component]
+
+def bp_FAL(data, **kwargs):
+    """
+    Name: FAL
+    Type: IR
+    RGB Components: R2529, R1506, R1080
+    Significance: An enhanced infrared false color representation of the scene
+
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [r2529(data), r1506(data), r1080(data)]
+
+def bp_MAF(data, **kwargs):
+    """
+    Name: MAF
+    Type: IR
+    RGB Components: OLINDEX3, LCPINDEX2, HCPINDEX2
+    Significance: Shows information related to mafic mineralogy
+    
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [r2529(data), r1506(data), r1080(data)]
+
+def bp_HYD(data, **kwargs):
+    """
+    Name: HYD
+    Type: IR
+    RGB Components: SINDEX2, BD2100_2, BD1900_2
+    Significance: Shows information related to bound water in minerals
+    
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [sindex2(data), bd2100_2(data), bd1900_2(data)]
+
+
+def bp_PHY(data, **kwargs):
+    """
+    Name: PHY
+    Type: IR
+    RGB Components: D2300, D2200, BD1900r2
+    Significance: Shows information related to hydroxylated minerals \
+                  including phyllosilicates
+    
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [d2300(data), d2200(data), bd1900r2(data)]
+
+
+def bp_PFM(data, **kwargs):
+    """
+    Name: PFM
+    Type: IR
+    RGB Components: BD2355, D2300, BD2290
+    Significance: Shows information related to cation composition of \
+                  hydroxylated minerals including Fe/Mg-phyllosilicate
+    
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [bd2355(data), d2300(data), bd2290(data)]
+
+
+def bp_PAL(data, **kwargs):
+    """
+    Name: PAL
+    Type: IR
+    RGB Components: BD2210_2, BD2190, BD2165
+    Significance: Shows information related to cation composition of \
+                  hydroxylated minerals including AI-phyllosilicate \
+                  and hydrated silica
+    
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [bd2210_2(data), bd2190(data), bd2165(data)]
+
+
+def bp_HYS(data, **kwargs):
+    """
+    Name: HYS
+    Type: IR
+    RGB Components: MIN2250, BD2250, BD1900r2
+    Significance: Shows information related to Si/AI-hydroxylated mineralts \
+                  that can be used to differentiate between hydrated silica \
+                  and AI-phyllosilicates
+    
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [min2250(data), bd2250(data), bd1900r2(data)]
+
+def bp_ICE(data, **kwargs):
+    """
+    Name: ICE
+    Type: IR
+    RGB Components: BD1900_2, BD1500_2, BD1435
+    Significance: Shows information related to water or carbon dioxide frost \
+                  or ice
+
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [bd1900_2(data), bd1500_2(data), bd1435(data)]
+
+def bp_IC2(data, **kwargs):
+    """
+    Name: IC2
+    Type: IR
+    RGB Components: R3920, BD1500_2, BD1435
+    Significance: Shows complementary information related to water or carbon \
+                  diooxide frost or ice.
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [r3920(data), bd1500_2(data), bd1435(data)]
+
+def bp_CHL(data, **kwargs):
+    """
+    Name: CHL
+    Type: IR
+    RGB Components: ISLOPE, BD3000, IRR2
+    Significance: Shows informatino related to inferred chloride deposits \
+                  detected from THEMIS data and spacially associated \
+                  hydrated mineral deposits
+
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [islope1(data), bd3000(data), irr2(data)]
+
+def bp_CAR(data, **kwargs):
+    """
+    Name: CAR
+    Type: IR
+    RGB Components: D2300, BD2500H2, BD1900_2
+    Significance: Shows information related to Mg carbonate minerals.
+
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [d2300(data), bd2500h2(data), bd1900_2(data)]
+
+def bp_CR2(data, **kwargs):
+    """
+    Name: CR2
+    Type: IR
+    RGB Components: MIN2295_2480, MIN2345_2537, CINDEX2
+    Significance: Shows information distinguishing carbonate minerals
+
+    Parameters
+    ----------
+    data: ndarray
+          (n,m,p) array
+
+    Returns
+    -------
+     : list
+       contains processed RGB components as [R, G, B]
+    """
+    return [min2295_2480(data), min2345_2537(data), cindex2(data)]
+
+
