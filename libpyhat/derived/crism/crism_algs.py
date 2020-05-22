@@ -55,7 +55,7 @@ def rbr(data, **kwargs):
     return generic_func(data, wv, kernels=kernels, func=cf.rockdust2_func, **kwargs)
 
 
-def bd530(data, use_kernels = True, **kwargs):
+def bd530(data, use_kernels = False, **kwargs):
     """
     NAME: BD530
     PARAMETER: 0.53 micron band depth
@@ -105,7 +105,8 @@ def bd530_2(data, **kwargs):
 
     return bd530(data, True)
 
-def sh600(data, use_kernels = True, **kwargs):
+
+def sh600(data, use_kernels = False, **kwargs):
     """
     NAME: SH600
     PARAMETER: 0.60 micron shoulder height
@@ -244,7 +245,7 @@ def bd860(data, use_kernels = True, **kwargs):
     return generic_func(data, wv, func = cf.bd_func2, pass_wvs = True, kernels = kernels, **kwargs)
 
 
-def bd920(data, use_kernels = True, **kwargs):
+def bd920(data, use_kernels = False, **kwargs):
     """
     NAME: BD920
     PARAMETER: 0.92 micron band depth
@@ -644,7 +645,7 @@ def bd1435(data, **kwargs):
     return generic_func(data, wv, func = cf.bd_func2, pass_wvs = True, kernels = kernels, **kwargs)
 
 
-def bd1500(data, use_kernels = True, **kwargs):
+def bd1500(data, use_kernels = False, **kwargs):
     """
     NAME: BD1500
     PARAMETER: 1.5 micron H2O ice band depth
@@ -902,7 +903,7 @@ def bdi2000(data, **kwargs):
     raise NotImplementedError
 
 
-def bd2100(data, use_kernels = True, **kwargs):
+def bd2100(data, use_kernels = False, **kwargs):
     """
     NAME: BD2100
     PARAMETER: 2.1 micron band depth
@@ -1061,7 +1062,7 @@ def min2200(data, **kwargs):
 
     return np.minimum(bd_1, bd_2)
 
-def bd2210(data, use_kernels = True, **kwargs):
+def bd2210(data, use_kernels = False, **kwargs):
     """
     NAME: BD2210
     PARAMETER: 2.21 micron band depth
