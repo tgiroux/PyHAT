@@ -514,3 +514,11 @@ def test_r3920(crism_img):
     res = crism_algs.r3920(crism_img)
     expected = np.arange(19, 28).reshape(3,3)
     np.testing.assert_array_almost_equal(res, expected)
+
+def test_bp_TRU(crism_img):
+    res = crism_algs.bp_TRU(crism_img)
+    r = crism_algs.r600(crism_img)
+    g = crism_algs.r530(crism_img)
+    b = crism_algs.r440(crism_img)
+    expected = [r,g,b]
+    np.testing.assert_arry_almost_equal(res, expected)
