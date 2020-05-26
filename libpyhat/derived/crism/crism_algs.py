@@ -1521,6 +1521,9 @@ def bd2500h(data, use_kernels = True, **kwargs):
 
     return generic_func(data, wv, func = cf.bd2500h_func, **kwargs)
 
+def bd2500h2(data, **kwargs):
+    raise NotImplementedError
+
 def bd3000(data, **kwargs):
     """
     NAME: BD3000
@@ -1779,6 +1782,31 @@ def r1080(data, **kwargs):
 
     wv = [1080]
     kernels = {1080: 5}
+
+    return generic_func(data, wv, func = (lambda x: x[0]), kernels = kernels, **kwargs)
+
+# TODO Ensure that this formulation is correct
+# This formulation was assumed based on similar parameters
+def r1300(data, **kwargs):
+    """
+    Name: R1300
+    Parameter: 1.30 micron reflectance
+    FORMULATION (with kernels): R1300
+    Rationale: IRA browse product component
+
+    Parameters
+    ----------
+    data : ndarray
+           (n,m,p) array
+
+    Returns
+    -------
+     : ndarray
+       the processed ndarray
+    """
+
+    wv = [1300]
+    kernels = {1300: 5}
 
     return generic_func(data, wv, func = (lambda x: x[0]), kernels = kernels, **kwargs)
 
@@ -2079,7 +2107,7 @@ def bp_MAF(data, **kwargs):
      : list
        contains processed RGB components as [R, G, B]
     """
-    return [r2529(data), r1506(data), r1080(data)]
+    return [olivine_index3(data), lcp_index2(data), hcp_index2(data)]
 
 def bp_HYD(data, **kwargs):
     """
