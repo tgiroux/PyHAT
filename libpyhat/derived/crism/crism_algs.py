@@ -346,8 +346,30 @@ def bdi1000IR(data, **kwargs):
 
     raise NotImplementedError
 
-def r1300(data,**kwargs):
-    raise NotImplementedError
+# TODO Ensure that this formulation is correct
+# This formulation was assumed based on similar parameters
+def r1300(data, **kwargs):
+    """
+    Name: R1300
+    Parameter: 1.30 micron reflectance
+    FORMULATION (with kernels): R1300
+    Rationale: IRA browse product component
+
+    Parameters
+    ----------
+    data : ndarray
+           (n,m,p) array
+
+    Returns
+    -------
+     : ndarray
+       the processed ndarray
+    """
+
+    wv = [1300]
+    kernels = {1300: 5}
+
+    return generic_func(data, wv, func = (lambda x: x[0]), kernels = kernels, **kwargs)
 
 def r1330(data, **kwargs):
     """
@@ -1785,30 +1807,6 @@ def r1080(data, **kwargs):
 
     return generic_func(data, wv, func = (lambda x: x[0]), kernels = kernels, **kwargs)
 
-# TODO Ensure that this formulation is correct
-# This formulation was assumed based on similar parameters
-def r1300(data, **kwargs):
-    """
-    Name: R1300
-    Parameter: 1.30 micron reflectance
-    FORMULATION (with kernels): R1300
-    Rationale: IRA browse product component
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-
-    wv = [1300]
-    kernels = {1300: 5}
-
-    return generic_func(data, wv, func = (lambda x: x[0]), kernels = kernels, **kwargs)
 
 def r1506(data, **kwargs):
     """
