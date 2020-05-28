@@ -96,8 +96,11 @@ def test_rpeak1(crism_img):
     assert res == expected
 
 def test_bdi1000VIS(crism_img):
-    with pytest.raises(NotImplementedError):
-        crism_algs.bdi1000VIS(crism_img)
+    res = crism_algs.bdi1000VIS(crism_img)
+    expected = [[6.55059271, 6.53454245, 6.51849219],
+                [6.50244193, 6.48639167, 6.47034141],
+                [6.45429115, 6.43824089, 6.42219063]]
+    np.testing.assert_array_almost_equal(res, expected)
 
 def test_bdi1000IR(crism_img):
     with pytest.raises(NotImplementedError):
@@ -558,7 +561,10 @@ def test_bp_TAN(crism_img):
     g = crism_algs.bp_IRA(crism_img)
     b = crism_algs.r770(crism_img)
     expected = [r,g,b]
-    np.testing.assert_array_almost_equal(res, expected)
+    
+    np.testing.assert_array_almost_equal(r, res[0])
+    np.testing.assert_array_almost_equal(g, res[1])
+    np.testing.assert_array_almost_equal(b, res[2])
     
 def test_bp_IRA(crism_img):
     res = crism_algs.bp_IRA(crism_img)
@@ -651,7 +657,7 @@ def test_bp_CHL(crism_img):
 def test_bp_CAR(crism_img):
     res = crism_algs.bp_CAR(crism_img)
     r = crism_algs.d2300(crism_img)
-    g = crism_algs.bd2500h2(crism_img)
+    g = crism_algs.bd2500h(crism_img)
     b = crism_algs.bd1900_2(crism_img)
     expected = [r,g,b]
     np.testing.assert_array_almost_equal(res, expected)

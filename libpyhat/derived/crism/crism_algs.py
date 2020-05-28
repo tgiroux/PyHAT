@@ -296,10 +296,10 @@ def bd920_2(data, **kwargs):
 
 def rpeak1(data, **kwargs):
     """
-    NAME: BDI1000VIS
-    PARAMETER: 1 micron integrated band depth; VIS wavelengths
-    FORMULATION: divide R830, R860, R890, R915 by RPEAK1 then\
-      integrate over (1 -  normalized radiances)
+    NAME: RPEAK1
+    PARAMETER: Reflectance peak 1
+    FORMULATION: Wavelength where first derivative = 0 of fifth-order \
+            polynomial fit to reflectances at all valid VNIR wavelengths
     RATIONALE: crystalline Fe+2 or Fe+3 minerals
 
     Parameters
@@ -328,8 +328,15 @@ def bdi1000VIS(data, **kwargs):
       integrate over (1 -  normalized radiances)
     RATIONALE: crystalline Fe+2 or Fe+3 minerals
     """
+    denominator = rpeak1(data)
+    print(denominator)
+    wvs = [833, 860, 892, 925, 951, 984, 1023]
+    
+    subset = data.loc[wvs,:,:]
+    for i in subset:
+        i[i==data.no_data_value] = 0
 
-    raise NotImplementedError
+    return cf.bdi1000VIS_func(subset, denominator)
 
 # TODO: bdi1000IR
 def bdi1000IR(data, **kwargs):
@@ -2289,7 +2296,7 @@ def bp_CAR(data, **kwargs):
      : list
        contains processed RGB components as [R, G, B]
     """
-    return [d2300(data), bd2500h2(data), bd1900_2(data)]
+    return [d2300(data), bd2500h(data), bd1900_2(data)]
 
 def bp_CR2(data, **kwargs):
     """

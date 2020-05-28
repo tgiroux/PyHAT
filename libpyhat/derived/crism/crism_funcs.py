@@ -37,7 +37,16 @@ def rpeak1_func(data, wv):
         if derivation == 0:
             return wv[i]
 
-#@@TODO bdi1000vis
+
+def bdi1000VIS_func(data, rpeak1):
+    res = np.zeros(data[0].shape)
+    for r in data:
+        res += 1 - ( r / rpeak1 )
+
+    expected = [[6.55059271, 6.53454245, 6.51849219],
+                [6.50244193, 6.48639167, 6.47034141],
+                [6.45429115, 6.43824089, 6.42219063]]
+    return res
 
 def olivine_index2_func(bands):
     b1080, b1210, b1330, b1470, b1750, b2400 = bands
