@@ -2024,7 +2024,7 @@ def bp_PHY(data, **kwargs):
      : list
        contains processed RGB components as [R, G, B]
     """
-    return [d2300(data), d2200(data), bd1900r(data)]
+    return [d2300(data), d2200(data), bd1900r2(data)]
 
 
 def bp_PFM(data, **kwargs):
@@ -2089,7 +2089,7 @@ def bp_HYS(data, **kwargs):
      : list
        contains processed RGB components as [R, G, B]
     """
-    return [min2250(data), bd2250(data), bd1900r(data)]
+    return [min2250(data), bd2250(data), bd1900r2(data)]
 
 def bp_ICE(data, **kwargs):
     """

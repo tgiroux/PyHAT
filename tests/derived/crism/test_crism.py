@@ -22,11 +22,6 @@ def test_bd530(crism_img, use_kernels, expected):
     res = crism_algs.bd530(crism_img, use_kernels = use_kernels)
     np.testing.assert_array_almost_equal(res, expected)
 
-    # test b530_2
-    if(use_kernels):
-        res_2 = crism_algs.bd530_2(crism_img)
-        np.testing.assert_array_almost_equal(res_2,expected)
-
 
 @pytest.mark.parametrize("use_kernels, expected", [
         (True, [[0.17342537, 0.1647541, 0.15690867],
@@ -40,10 +35,6 @@ def test_sh600(crism_img, use_kernels, expected):
     res = crism_algs.sh600(crism_img, use_kernels)
     np.testing.assert_array_almost_equal(res, expected)
 
-    # test sh600_2
-    if(use_kernels):
-        res_2 = crism_algs.sh600_2(crism_img)
-        np.testing.assert_array_almost_equal(res_2, expected)
 
 def test_sh770(crism_img):
     res = crism_algs.sh770(crism_img)
@@ -84,10 +75,10 @@ def test_bd920(crism_img, use_kernels, expected):
     res = crism_algs.bd920(crism_img, use_kernels)
     np.testing.assert_array_almost_equal(res, expected)
     
-    #test bd902_2
+    #test bd902
     if(use_kernels):
-        res_2 = crism_algs.bd920_2(crism_img)
-        np.testing.assert_array_almost_equal(res_2, expected)
+        res = crism_algs.bd920(crism_img)
+        np.testing.assert_array_almost_equal(res, expected)
 
 
 def test_rpeak1(crism_img):
@@ -189,8 +180,8 @@ def test_bd1500(crism_img):
     np.testing.assert_array_almost_equal(res, expected)
 
 
-def test_bd1500_2(crism_img):
-    res = crism_algs.bd1500_2(crism_img)
+def test_bd1500(crism_img):
+    res = crism_algs.bd1500(crism_img)
     expected = [[-1.421053, -1.35, -1.285714],
                 [-1.227273, -1.173913, -1.125],
                 [-1.08, -1.038462, -1.]]
@@ -262,11 +253,6 @@ def test_bd2100(crism_img, use_kernels, expected):
     res = crism_algs.bd2100(crism_img, use_kernels)
     np.testing.assert_array_almost_equal(res, expected)
     
-    # test bd2100_2
-    if(use_kernels):
-        res_2 = crism_algs.bd2100_2(crism_img)
-        np.testing.assert_array_almost_equal(res_2, expected)
-
 def test_bd2165(crism_img):
     res = crism_algs.bd2165(crism_img)
     expected = [[0.347181, 0.325905, 0.307087],
@@ -305,11 +291,6 @@ def test_bd2210(crism_img, use_kernels, expected):
     res = crism_algs.bd2210(crism_img, use_kernels)
     np.testing.assert_array_almost_equal(res, expected)
     
-    # test bd2210_2
-    if(use_kernels):
-        res_2 = crism_algs.bd2210_2(crism_img)
-        np.testing.assert_array_almost_equal(res_2, expected)
-
 def test_d2200(crism_img):
     res = crism_algs.d2200(crism_img)
     expected = [[-0.473684, -0.45, -0.428571],
@@ -412,10 +393,6 @@ def test_min2345_2537(crism_img):
 def test_bd2500h(crism_img, use_kernels, expected):
     res = crism_algs.bd2500h(crism_img, use_kernels)
     np.testing.assert_array_almost_equal(res, expected)
-    # test bd2500h2
-    res_2 = crism_algs.bd2500h2(crism_img)
-    if(use_kernels):
-        np.testing.assert_array_almost_equal(res, expected)
 
 def test_bd3000(crism_img):
     res = crism_algs.bd3000(crism_img)
@@ -545,16 +522,16 @@ def test_bp_VNA(crism_img):
     
 def test_bp_FEM(crism_img):
     res = crism_algs.bp_FEM(crism_img)
-    r = crism_algs.bd530_2(crism_img)
-    g = crism_algs.sh600_2(crism_img)
+    r = crism_algs.bd530(crism_img)
+    g = crism_algs.sh600(crism_img)
     b = crism_algs.bdi1000VIS(crism_img)
     expected = [r,g,b]
     np.testing.assert_array_almost_equal(res, expected)
     
 def test_bp_FM2(crism_img):
     res = crism_algs.bp_FM2(crism_img)
-    r = crism_algs.bd530_2(crism_img)
-    g = crism_algs.bd920_2(crism_img)
+    r = crism_algs.bd530(crism_img)
+    g = crism_algs.bd920(crism_img)
     b = crism_algs.bdi1000VIS(crism_img)
     expected = [r,g,b]
     np.testing.assert_array_almost_equal(res, expected)
@@ -597,8 +574,8 @@ def test_bp_MAF(crism_img):
 def test_bp_HYD(crism_img):
     res = crism_algs.bp_HYD(crism_img)
     r = crism_algs.sindex2(crism_img)
-    g = crism_algs.bd2100_2(crism_img)
-    b = crism_algs.bd1900_2(crism_img)
+    g = crism_algs.bd2100(crism_img)
+    b = crism_algs.bd1900(crism_img)
     expected = [r,g,b]
     np.testing.assert_array_almost_equal(res, expected)
     
@@ -620,7 +597,7 @@ def test_bp_PFM(crism_img):
     
 def test_bp_PAL(crism_img):
     res = crism_algs.bp_PAL(crism_img)
-    r = crism_algs.bd2210_2(crism_img)
+    r = crism_algs.bd2210(crism_img)
     g = crism_algs.bd2190(crism_img)
     b = crism_algs.bd2165(crism_img)
     expected = [r,g,b]
@@ -636,8 +613,8 @@ def test_bp_HYS(crism_img):
     
 def test_bp_ICE(crism_img):
     res = crism_algs.bp_ICE(crism_img)
-    r = crism_algs.bd1900_2(crism_img)
-    g = crism_algs.bd1500_2(crism_img)
+    r = crism_algs.bd1900(crism_img)
+    g = crism_algs.bd1500(crism_img)
     b = crism_algs.bd1435(crism_img)
     expected = [r,g,b]
     np.testing.assert_array_almost_equal(res, expected)
@@ -645,7 +622,7 @@ def test_bp_ICE(crism_img):
 def test_bp_IC2(crism_img):
     res = crism_algs.bp_IC2(crism_img)
     r = crism_algs.r3920(crism_img)
-    g = crism_algs.bd1500_2(crism_img)
+    g = crism_algs.bd1500(crism_img)
     b = crism_algs.bd1435(crism_img)
     expected = [r,g,b]
     np.testing.assert_array_almost_equal(res, expected)
@@ -662,7 +639,7 @@ def test_bp_CAR(crism_img):
     res = crism_algs.bp_CAR(crism_img)
     r = crism_algs.d2300(crism_img)
     g = crism_algs.bd2500h(crism_img)
-    b = crism_algs.bd1900_2(crism_img)
+    b = crism_algs.bd1900(crism_img)
     expected = [r,g,b]
     np.testing.assert_array_almost_equal(res, expected)
     
