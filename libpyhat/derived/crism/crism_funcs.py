@@ -48,6 +48,7 @@ def bdi1000VIS_func(data, rpeak1):
                 [6.45429115, 6.43824089, 6.42219063]]
     return res
 
+
 def olivine_index2_func(bands):
     b1080, b1210, b1330, b1470, b1750, b2400 = bands
 

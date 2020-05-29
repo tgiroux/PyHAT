@@ -329,9 +329,7 @@ def bdi1000VIS(data, **kwargs):
     RATIONALE: crystalline Fe+2 or Fe+3 minerals
     """
     denominator = rpeak1(data)
-    print(denominator)
     wvs = [833, 860, 892, 925, 951, 984, 1023]
-    
     subset = data.loc[wvs,:,:]
     for i in subset:
         i[i==data.no_data_value] = 0
@@ -1521,7 +1519,7 @@ def min2345_2537(data, **kwargs):
 
     return np.minimum(bd2345_val, bd2537_val)
 
-def bd2500h(data, use_kernels = True, **kwargs):
+def bd2500h(data, use_kernels = False, **kwargs):
     """
     NAME: BD2500h
     PARAMETER: Mg Carbonate overtone band depth
@@ -1551,7 +1549,23 @@ def bd2500h(data, use_kernels = True, **kwargs):
     return generic_func(data, wv, func = cf.bd2500h_func, **kwargs)
 
 def bd2500h2(data, **kwargs):
-    raise NotImplementedError
+    """
+    NAME: BD2500h2
+    PARAMETER: Mg Carbonate overtone band depth
+    FORUMULATION: 1 - ( R2480 / ((a * R2364) + (b * 2570)))
+    RATIONALE: Mg-carbonates
+
+    Parameters
+    ----------
+    data : ndarray
+           (n,m,p) array
+
+    Returns
+    -------
+     : ndarray
+       the processed ndarray
+    """
+    return bd2500h(data, True)
 
 def bd3000(data, **kwargs):
     """

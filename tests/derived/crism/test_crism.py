@@ -412,6 +412,10 @@ def test_min2345_2537(crism_img):
 def test_bd2500h(crism_img, use_kernels, expected):
     res = crism_algs.bd2500h(crism_img, use_kernels)
     np.testing.assert_array_almost_equal(res, expected)
+    # test bd2500h2
+    res_2 = crism_algs.bd2500h2(crism_img)
+    if(use_kernels):
+        np.testing.assert_array_almost_equal(res, expected)
 
 def test_bd3000(crism_img):
     res = crism_algs.bd3000(crism_img)
