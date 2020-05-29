@@ -55,7 +55,7 @@ def rbr(data, **kwargs):
     return generic_func(data, wv, kernels=kernels, func=cf.rockdust2_func, **kwargs)
 
 
-def bd530(data, use_kernels = False, **kwargs):
+def bd530(data, use_kernels = True, **kwargs):
     """
     NAME: BD530
     PARAMETER: 0.53 micron band depth
@@ -85,28 +85,7 @@ def bd530(data, use_kernels = False, **kwargs):
     return generic_func(data, wv, func = cf.bd_func1, kernels = kernels, pass_wvs = True, **kwargs)
 
 
-def bd530_2(data, **kwargs):
-    """
-    NAME: BD530_2
-    PARAMETER: 0.53 micron band depth
-    FORMULATION: 1 - (R530/(a*R614+b*R440))
-    RATIONALE: fine-grained crystalline hermatite
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-
-    return bd530(data, True)
-
-
-def sh600(data, use_kernels = False, **kwargs):
+def sh600(data, use_kernels = True, **kwargs):
     """
     NAME: SH600
     PARAMETER: 0.60 micron shoulder height
@@ -135,27 +114,6 @@ def sh600(data, use_kernels = False, **kwargs):
         kernels[716] = 3
 
     return generic_func(data, wv, func = cf.sh_func, pass_wvs = True, kernels = kernels, **kwargs)
-
-
-def sh600_2(data, **kwargs):
-    """
-    NAME: SH600_2
-    PARAMETER: 0.60 micron shoulder height
-    FORMULATION: 1 - (a * R533 + b * R716) / R600
-    RATIONALE: select ferric minerals
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-    return sh600(data, True)
-
 
 def sh770(data, **kwargs):
     """
@@ -245,7 +203,7 @@ def bd860(data, use_kernels = True, **kwargs):
     return generic_func(data, wv, func = cf.bd_func2, pass_wvs = True, kernels = kernels, **kwargs)
 
 
-def bd920(data, use_kernels = False, **kwargs):
+def bd920(data, use_kernels = True, **kwargs):
     """
     NAME: BD920
     PARAMETER: 0.92 micron band depth
@@ -275,25 +233,6 @@ def bd920(data, use_kernels = False, **kwargs):
 
     return generic_func(data, wv, func = cf.bd_func2, pass_wvs = True, kernels = kernels, **kwargs)
 
-def bd920_2(data, **kwargs):
-    """
-    NAME: BD920
-    PARAMETER: 0.92 micron band depth
-    FORMULATION: 1 - ( R920 / (a * R807 + b * R984) )
-    RATIONALE: Crystalline ferric minerals and LCP
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-    return bd920(data, True)
-
 def rpeak1(data, **kwargs):
     """
     NAME: RPEAK1
@@ -319,7 +258,6 @@ def rpeak1(data, **kwargs):
 
     return generic_func(data, wvs, func = cf.rpeak1_func, pass_wvs = True, **kwargs)
 
-# TODO: bdi1000VIS
 def bdi1000VIS(data, **kwargs):
     """
     NAME: BDI1000VIS
@@ -674,7 +612,7 @@ def bd1435(data, **kwargs):
     return generic_func(data, wv, func = cf.bd_func2, pass_wvs = True, kernels = kernels, **kwargs)
 
 
-def bd1500(data, use_kernels = False, **kwargs):
+def bd1500(data, use_kernels = True, **kwargs):
     """
     NAME: BD1500
     PARAMETER: 1.5 micron H2O ice band depth
@@ -704,26 +642,6 @@ def bd1500(data, use_kernels = False, **kwargs):
 
     wv = [1367, 1505, 1558, 1808]
     return generic_func(data, wv, func = cf.bd1500_func, **kwargs)
-
-
-def bd1500_2(data, **kwargs):
-    """
-    NAME: BD1500_2
-    PARAMETER: 1.5 micron H2O ice band depth
-    FORMULATION: 1.0 - (R1525 / (b * R1808 + a * R1367))
-    RATIONALE: H2O ice on surface or in atmosphere
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-    return bd1500(data, True)
 
 
 def icer1(data, **kwargs):
@@ -932,7 +850,7 @@ def bdi2000(data, **kwargs):
     raise NotImplementedError
 
 
-def bd2100(data, use_kernels = False, **kwargs):
+def bd2100(data, use_kernels = True, **kwargs):
     """
     NAME: BD2100
     PARAMETER: 2.1 micron band depth
@@ -961,26 +879,6 @@ def bd2100(data, use_kernels = False, **kwargs):
 
     wv = [1930, 2120, 2130, 2250]
     return generic_func(data, wv, func = cf.bd2100_func, pass_wvs=True, **kwargs)
-
-
-def bd2100_2(data, **kwargs):
-    """
-    NAME: BD2100
-    PARAMETER: 2.1 micron band depth
-    FORMULATION: 1 - ( R2132 / (a * R1930 + b * R2250) )
-    RATIONALE: H20 in monohydrated sulfates
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-    return bd2100(data, True)
 
 
 def bd2165(data, **kwargs):
@@ -1091,7 +989,7 @@ def min2200(data, **kwargs):
 
     return np.minimum(bd_1, bd_2)
 
-def bd2210(data, use_kernels = False, **kwargs):
+def bd2210(data, use_kernels = True, **kwargs):
     """
     NAME: BD2210
     PARAMETER: 2.21 micron band depth
@@ -1119,26 +1017,6 @@ def bd2210(data, use_kernels = False, **kwargs):
         kernels[2250] = 5
 
     return generic_func(data, wv, func = cf.bd_func2, pass_wvs = True, kernels = kernels, **kwargs)
-
-
-def bd2210_2(data, **kwargs):
-    """
-    NAME: BD2210_2
-    PARAMETER: 2.21 micron band depth
-    FORMULATION: 1 - ( R2210 / (a*R2165+b*R2250) )
-    RATIONALE: Al-OH minerals: monohydrated minerals
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-    return bd2210(data, True)
 
 
 def d2200(data, **kwargs):
@@ -1331,7 +1209,6 @@ def d2300(data, **kwargs):
                       2330: 3,
                       2530: 5}
 
-    # return generic_func(data, wv, func = cf.d2300_func, **kwargs)
     return generic_func(data, wv, func = cf.d2300_func, kernels = kernels, **kwargs)
 
 def bd2355(data, **kwargs):
@@ -1519,7 +1396,7 @@ def min2345_2537(data, **kwargs):
 
     return np.minimum(bd2345_val, bd2537_val)
 
-def bd2500h(data, use_kernels = False, **kwargs):
+def bd2500h(data, use_kernels = True, **kwargs):
     """
     NAME: BD2500h
     PARAMETER: Mg Carbonate overtone band depth
@@ -1547,25 +1424,6 @@ def bd2500h(data, use_kernels = False, **kwargs):
         return generic_func(data, wv, func = cf.bd_func2, pass_wvs = True, kernels = kernels, **kwargs)
 
     return generic_func(data, wv, func = cf.bd2500h_func, **kwargs)
-
-def bd2500h2(data, **kwargs):
-    """
-    NAME: BD2500h2
-    PARAMETER: Mg Carbonate overtone band depth
-    FORUMULATION: 1 - ( R2480 / ((a * R2364) + (b * 2570)))
-    RATIONALE: Mg-carbonates
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-    return bd2500h(data, True)
 
 def bd3000(data, **kwargs):
     """
@@ -2028,7 +1886,7 @@ def bp_FEM(data, **kwargs):
      : list 
        contains processed RGB components as [R, G, B]
     """
-    return [bd530_2(data), sh600_2(data), bdi1000VIS(data)]
+    return [bd530(data), sh600(data), bdi1000VIS(data)]
 
 def bp_FM2(data, **kwargs):
     """
@@ -2047,7 +1905,7 @@ def bp_FM2(data, **kwargs):
      : list 
        contains processed RGB components as [R, G, B]
     """
-    return [bd530_2(data), bd920_2(data), bdi1000VIS(data)]
+    return [bd530(data), bd920(data), bdi1000VIS(data)]
 
 
 def bp_TAN(data, **kwargs):
@@ -2145,7 +2003,7 @@ def bp_HYD(data, **kwargs):
      : list
        contains processed RGB components as [R, G, B]
     """
-    return [sindex2(data), bd2100_2(data), bd1900_2(data)]
+    return [sindex2(data), bd2100(data), bd1900(data)]
 
 
 def bp_PHY(data, **kwargs):
@@ -2166,7 +2024,7 @@ def bp_PHY(data, **kwargs):
      : list
        contains processed RGB components as [R, G, B]
     """
-    return [d2300(data), d2200(data), bd1900r2(data)]
+    return [d2300(data), d2200(data), bd1900r(data)]
 
 
 def bp_PFM(data, **kwargs):
@@ -2209,7 +2067,7 @@ def bp_PAL(data, **kwargs):
      : list
        contains processed RGB components as [R, G, B]
     """
-    return [bd2210_2(data), bd2190(data), bd2165(data)]
+    return [bd2210(data), bd2190(data), bd2165(data)]
 
 
 def bp_HYS(data, **kwargs):
@@ -2231,7 +2089,7 @@ def bp_HYS(data, **kwargs):
      : list
        contains processed RGB components as [R, G, B]
     """
-    return [min2250(data), bd2250(data), bd1900r2(data)]
+    return [min2250(data), bd2250(data), bd1900r(data)]
 
 def bp_ICE(data, **kwargs):
     """
@@ -2251,7 +2109,7 @@ def bp_ICE(data, **kwargs):
      : list
        contains processed RGB components as [R, G, B]
     """
-    return [bd1900_2(data), bd1500_2(data), bd1435(data)]
+    return [bd1900(data), bd1500(data), bd1435(data)]
 
 def bp_IC2(data, **kwargs):
     """
@@ -2270,7 +2128,7 @@ def bp_IC2(data, **kwargs):
      : list
        contains processed RGB components as [R, G, B]
     """
-    return [r3920(data), bd1500_2(data), bd1435(data)]
+    return [r3920(data), bd1500(data), bd1435(data)]
 
 def bp_CHL(data, **kwargs):
     """
@@ -2310,7 +2168,7 @@ def bp_CAR(data, **kwargs):
      : list
        contains processed RGB components as [R, G, B]
     """
-    return [d2300(data), bd2500h(data), bd1900_2(data)]
+    return [d2300(data), bd2500h(data), bd1900(data)]
 
 def bp_CR2(data, **kwargs):
     """
