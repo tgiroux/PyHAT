@@ -256,7 +256,7 @@ def rpeak1(data, **kwargs):
     vnir_mask = (wvs > 400) * (wvs < 1000)
     vnir_wvs = wvs[vnir_mask]
 
-    return generic_func(data, wvs, func = cf.rpeak1_func, pass_wvs = True, **kwargs)
+    return generic_func(data, vnir_wvs, func = cf.rpeak1_func, pass_wvs = True, **kwargs)
 
 def bdi1000VIS(data, **kwargs):
     """
