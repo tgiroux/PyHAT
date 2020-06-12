@@ -1,0 +1,115 @@
+
+#import gdal
+import matplotlib.pyplot as plot
+import libpyhat.io.io_moon_mineralogy_mapper as ioM3
+from libpyhat.derived.m3 import pipe
+import os
+import numpy as np
+
+def band_scale(band,n_std):
+    bmean = np.nanmean(band)
+    bstd = np.nanstd(band)
+    bmin = bmean - bstd * n_std
+    bmax = bmean + bstd * n_std
+    # normalize each band to span the range 0 to 1
+    band[band < bmin] = bmin
+    band[band > bmax] = bmax
+    band = (band - bmin) / (bmax - bmin)
+    return band
+
+
+#create a dictionary holding all of the M3 parameter functions, so they can be called by name in a loop
+m3_functions = {'bd1umratio': pipe.bd1umratio,
+                'bd2umratio': pipe.bd2umratio,
+                'bd620': pipe.bd620,
+                'bd950': pipe.bd950,
+                'bd1050': pipe.bd1050,
+                'bd1250': pipe.bd1250,
+                'bd1900': pipe.bd1900,
+                'bd2300': pipe.bd2300,
+                'bd2800': pipe.bd2800,
+                'bd3000': pipe.bd3000,
+                'bdi1000':  pipe.bdi1000,
+                'bdi2000': pipe.bdi2000,
+                'hlnd_isfeo': pipe.hlnd_isfeo,
+                'nbd1400': pipe.nbd1400,
+                'nbd1480': pipe.nbd1480,
+                'nbd2300': pipe.nbd2300,
+                'nbd2700': pipe.nbd2700,
+                'nbd2850': pipe.nbd2850,
+                'olindex': pipe.olindex,
+                'oneum_min': pipe.oneum_min,
+                'oneum_slope': pipe.oneum_slope,
+                'oneum_sym': pipe.oneum_sym,
+                'r540': pipe.r540,
+                'r750': pipe.r750,
+                'r950_750': pipe.r950_750,
+                'r1580': pipe.r1580,
+                'r2780': pipe.r2780,
+                'thermal_ratio': pipe.thermal_ratio,
+                'thermal_slope': pipe.thermal_slope,
+                'twoum_ratio': pipe.twoum_ratio,
+                'twoum_slope': pipe.twoum_slope,
+                'uvvis': pipe.uvvis,
+                'visnir': pipe.visnir,
+                'visslope': pipe.visslope,
+                'visuv': pipe.visuv}
+
+#specify the input file name(s) with full path
+files = ["/home/tgiroux/Desktop/m3_img/M3_4031seg_L2_aristcratersm.img"]
+color_mapping = 'cividis'  # specify the color map to use
+stretch_factor = 3  # number of stdevs +/- to allow in color stretch. Smaller number = harsher stretch
+
+for f in files:
+    #extract the path and the file name
+    path, filename = os.path.split(f)
+
+    #Read the M3 file into "data"
+    data = ioM3.M3(f)
+
+    #create an empty dictionary to store the results of all the M3 functions
+    m3_results = {}
+
+    #loop through each of the functions
+    for key in m3_functions.keys():
+        try:
+            m3_results[key]=m3_functions[key](data) #appy the current function to the data and store the result
+            result_mean = np.nanmean(m3_results[key])
+            result_std = np.nanstd(m3_results[key])
+            plot.imshow(m3_results[key], vmin=result_mean - (stretch_factor * result_std),
+                       vmax=result_mean + (stretch_factor * result_std))
+
+            plot.colorbar()  # include a color bar next to the image
+            plot.title(key)  # give the image a title matching the function applied
+
+            #save the current figure to a file
+            print(path + '/' + filename + '_M3_' + key + '.png')
+            plot.savefig(path+'/'+filename+'_M3_'+key+'.png',dpi=1000)
+            plot.close()
+        except:
+            pass
+
+
+    #create an RGB composite
+    red_key = 'bd950'
+    green_key = 'bdi2000'
+    blue_key = 'bdi1000'
+    stretch_rgb = {'r': 3, 'g': 3, 'b': 3} #enter the number of stdevs +/- to use to stretch each band
+
+    r = m3_results[red_key]
+    g = m3_results[green_key]
+    b = m3_results[blue_key]
+
+    r = band_scale(r, stretch_rgb['r'])
+    g = band_scale(g, stretch_rgb['g'])
+    b = band_scale(b, stretch_rgb['b'])
+
+    color_image = np.vstack(([r.T],[g.T],[b.T])).T #stack the bands into a 3D array (transposes to get the shape correct)
+
+    plot.imshow(color_image)
+    plot.savefig(path+'\\'+filename+'_M3_rgb_'+red_key+'_'+green_key+'_'+blue_key+'.png',dpi=1000)
+    plot.show()
+    plot.close()
+
+
+pass
