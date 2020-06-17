@@ -31,7 +31,7 @@ def rpeak1_func(data, wv):
     for i, band in enumerate(data):
         band = band.flatten()
         wavelength = np.full(len(band), wv[i])
-        a, b, c, d, e, f = np.polyfit(band, wavelength, 5)
+        a, b, c, d, e, f = np.polyfit(band, wavelength, 5, 2e-16)
         derivation = derivative(func, 1.0, dx=1e-6, n = 1)
 
         if derivation == 0:
