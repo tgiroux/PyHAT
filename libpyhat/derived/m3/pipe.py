@@ -28,51 +28,6 @@ def r750(data, **kwargs):
     wavelengths = [749]
     return utils.generic_func(data, wavelengths, func = pf.reflectance_func, **kwargs)
 
-@utils.warn_m3
-def uvvis(data, **kwargs):
-    """
-    Name: UVVIS
-    Parameter: Ultraviolet Visible Ratio
-    Formulation:
-    VISUV = R419/R749
-    Rationale: UV-Visible Spectral Ratio
-    Bands: R419, R749
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-    wavelengths = [419, 749]
-    return utils.generic_func(data, wavelengths, func = pf.uvvis_func, **kwargs)
-
-@utils.warn_m3
-def visuv(data, **kwargs):
-    """
-    Name: VISUV
-    Parameter: Ultraviolet Visible Ratio
-    Formulation:
-    VISUV = R749/R419
-    Rationale: Visible-UV Spectral Ratio
-    Bands: R419, R749
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-    wavelengths = [419, 749]
-    return utils.generic_func(data, wavelengths, func = pf.visuv_func, **kwargs)
 
 @utils.warn_m3
 def visnir(data, **kwargs):
@@ -344,30 +299,6 @@ def oneum_sym(data, **kwargs):
     wavelengths = [890, 1349]
     return utils.generic_func(data, wavelengths, func=pf.oneum_sym_func, **kwargs)
 
-@utils.warn_m3
-def bd1umratio(data, **kwargs):
-    """
-    Name: BD1um Ratio
-    Parameter: BD930 / BD990
-    Formulation:
-    BD930 = 1 - ((R929) / (((R1579 - R699)/(1579 - 699)) * (929-699) + R699))
-    BD990 = 1 - ((R989) / (((R1579 - R699)/(1579 - 699)) * (989-699) + R699))
-    BDRatio = BD930 / BD990
-    Rationale: Possible Ti or impact melt
-    Bands: R699, R929, R989, R1579
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-    wavelengths = [699, 929, 989, 1579]
-    return utils.generic_func(data, wavelengths, func = pf.bd1umratio_func, **kwargs)
 
 @utils.warn_m3
 def twoum_ratio(data, **kwargs):
@@ -414,30 +345,6 @@ def bdi2000(data, **kwargs):
     """
     return utils.bdi_generic(data, 22, 1658, 40)
 
-@utils.warn_m3
-def bd2umratio(data, **kwargs):
-    """
-    Name: BD2um Ratio
-    Parameter:2um band depth ratio
-    Formulation:
-    a = 1 - ((R1898) / (((R2578 - R1578)/(2578 - 1578)) * (1898-1578) + R1578))
-    b = 1 - ((R2298) / (((R2578 - R1578)/(2578 - 1578)) * (2298-1578) + R1578))
-    BD2um_ratio = a/b
-    Rationale: Possible Ti or impact melt
-    Bands: R1578, R1898,R2298, R2578
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-    wavelengths = [1578, 1898, 2298, 2578]
-    return utils.generic_func(data, wavelengths, func = pf.bd2umratio_func, **kwargs)
 
 @utils.warn_m3
 def thermal_ratio(data, **kwargs):
@@ -815,25 +722,3 @@ def nbd2850(data, **kwargs):
     """
     wavelengths = [2538, 2578, 2618, 2817, 2857, 2897]
     return utils.generic_func(data, wavelengths, func = pf.nbd2850_func, **kwargs)
-
-def hlnd_isfeo(data, **kwargs):
-    """
-    Name: Hlnd_IsFeO
-    Parameter: Optical Maturity Highlands
-    Formulation:
-    IsFeo = e ** [(1.82 - (R749/R889)) / 0.057]
-    Rationale: Based on Fischer
-    Bands: R1578, R2538
-
-    Parameters
-    ----------
-    data : ndarray
-           (n,m,p) array
-
-    Returns
-    -------
-     : ndarray
-       the processed ndarray
-    """
-    wavelengths = [749, 889]
-    return utils.generic_func(data, wavelengths, func = pf.hlnd_isfeo_func, **kwargs)

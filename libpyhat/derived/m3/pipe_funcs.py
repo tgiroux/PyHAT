@@ -5,16 +5,6 @@ import numpy as np
 def reflectance_func(bands):
     return bands[0]
 
-def uvvis_func(bands):
-    R419, R749 = bands
-
-    return R419 / R749
-
-def visuv_func(bands):
-    R419, R749 = bands
-
-    return R749 / R419
-
 def visnir_func(bands):
     R699, R1579 = bands
 
@@ -67,24 +57,10 @@ def oneum_sym_func(bands):
 
     return b/a
 
-def bd1umratio_func(bands):
-    R699, R929, R989, R1579 = bands
-
-    BD930 = 1 - ((R929) / (((R1579 - R699)/(1579 - 699)) * (929-699) + R699))
-    BD990 = 1 - ((R989) / (((R1579 - R699)/(1579 - 699)) * (989-699) + R699))
-    return BD930 / BD990
-
 def twoum_ratio_func(bands):
     R1578, R2538 = bands
 
     return R1578 / R2538
-
-def bd2umratio_func(bands):
-    R1578, R1898, R2298, R2578 = bands
-
-    a = 1 - ((R1898) / (((R2578 - R1578)/(2578 - 1578)) * (1898-1578) + R1578))
-    b = 1 - ((R2298) / (((R2578 - R1578)/(2578 - 1578)) * (2298-1578) + R1578))
-    return a/b
 
 def thermal_ratio_func(bands):
     R2538, R2978 = bands
@@ -160,8 +136,3 @@ def nbd2850_func(bands):
     RC = (R2538 + R2578 + R2618) / 3
     BB = (R2817 + R2857 + R2897) / 3
     return 1 - (BB / RC)
-
-def hlnd_isfeo_func(bands):
-    R749, R889 = bands
-
-    return e**((1.82 - (R749 / R889)) / 0.057)
