@@ -45,6 +45,25 @@ def bdi1000VIS_func(data, rpeak1):
 
     return res
 
+def bdi2000_func(data):
+
+    print(data.shape)
+    '''
+    # find max reflectance between 1300 and 1870
+    wvs = data.wavelengths
+    peak_mask = (wvs >= 1300) * (wvs <= 1870)
+    peak_r = max( wvs[peak_mask] )
+
+    # linear fit from peak_r to 2530
+    fit_mask = (wvs >= peak_r) * (wvs <= 2530)
+    fit_wvs = wvs[fit_mask]
+    fit = np.polyfit( fit_wvs, data[fit_wvs], 1 )
+
+    # integrate over 1 - normalized radiances
+       ''' 
+
+
+
 
 def olivine_index2_func(bands):
     b1080, b1210, b1330, b1470, b1750, b2400 = bands

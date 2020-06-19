@@ -289,8 +289,6 @@ def bdi1000IR(data, **kwargs):
 
     raise NotImplementedError
 
-# TODO Ensure that this formulation is correct
-# This formulation was assumed based on similar parameters
 def r1300(data, **kwargs):
     """
     Name: R1300
@@ -846,8 +844,10 @@ def bdi2000(data, **kwargs):
      (1 -  normalized radiances)
     RATIONALE: pyroxene abundance and particle size
     """
+    
+    wvs = [1660, 1815, 2140, 2210, 2250, 2290, 2330, 2350, 2390, 2430, 2460]
 
-    raise NotImplementedError
+    raise generic_func(data, wvs, func = cf.bdi2000_func, pass_wvs = True **kwargs)
 
 
 def bd2100(data, use_kernels = True, **kwargs):
