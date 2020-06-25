@@ -7,6 +7,7 @@ from libpyhat import regression
 from libpyhat import data
 from libpyhat import analytics
 from libpyhat import io
+from libpyhat import emi
 from libpyhat.data.spectra import Spectra
 from libpyhat.data.spectrum import Spectrum
 from libpyhat.transform import continuum
