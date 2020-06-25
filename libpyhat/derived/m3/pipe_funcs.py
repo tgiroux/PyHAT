@@ -19,6 +19,13 @@ def r950_750_func(bands):
 def bd_func(bands, wvs):
     return 1 - (bands[1] / ((bands[2] - bands[0]) / (wvs[2] - wvs[0]) * (wvs[1] - wvs[0]) + bands[0]))
 
+def bd_200_ratio(bands, wvs):
+    # bands = [1578, 1898, 2298, 2578]
+    cs = (bands[3] - bands[0]) / (wvs[3] - wvs[0])
+    a = 1 - (bands[1] / (cs * (wvs[1] - wvs[0]) + bands[0]))
+    b = 1 - (bands[2] / (cs * (wvs[2] - wvs[0]) + bands[0]))
+    return a/b
+
 def bdi_func(bands, wvs=[0,0]):
     lower_array, band_array, upper_array = bands
     lower_bound, y, upper_bound = wvs
@@ -94,6 +101,7 @@ def twoum_slope_func(bands):
 
     return (R2538 - R1578) / (2538 - 1578)
 
+
 def thermal_slope_func(bands):
     R2538, R2978 = bands
 
@@ -135,4 +143,11 @@ def nbd2850_func(bands):
 
     RC = (R2538 + R2578 + R2618) / 3
     BB = (R2817 + R2857 + R2897) / 3
+    return 1 - (BB / RC)
+
+def hbd3000_func(bands):
+    R2657, R2697, R2896, R2936 = bands
+
+    RC = (R2657 + R2697) / 2
+    BB = (R2896 + R2936) / 2
     return 1 - (BB / RC)

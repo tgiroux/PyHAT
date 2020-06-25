@@ -76,6 +76,29 @@ def r950_750(data, **kwargs):
     return utils.generic_func(data, wavelengths, func = pf.r950_750_func, **kwargs)
 
 @utils.warn_m3
+def bd_200_ratio(data, **kwargs):
+    """
+    bd200um_ratio
+    Parameter: Band depth 200 ratio
+    Formulation:
+    cs : (R2578 - R1578)/(wl[i2578] - wl[i1578])
+    Numerator 1 - (R1898/(cs * (wl[i1898] - wl[i1578]) + R1578))
+    Denominator 1 - (R2298/(cs * (wl[i2298] - wl[i1578]) + R1578))
+
+    Parameters
+    ----------
+    data : ndarray
+           (n,m,p) array
+
+    Returns
+    -------
+     : ndarray
+       the processed ndarray
+    """
+    wavelengths = [1578, 1898, 2298, 2578]
+    return utils.generic_func(data, wavelengths, func=pf.bd_200_ratio, **kwargs)
+
+@utils.warn_m3
 def bd620(data, **kwargs):
     """
     Name: BD620
@@ -722,3 +745,29 @@ def nbd2850(data, **kwargs):
     """
     wavelengths = [2538, 2578, 2618, 2817, 2857, 2897]
     return utils.generic_func(data, wavelengths, func = pf.nbd2850_func, **kwargs)
+
+
+@utils.warn_m3
+def hbd3000(data, **kwargs):
+    """
+    Name: HBD3000
+    Parameter:3um Ice Band
+    Formulation:
+    RC = (R2657 + R2697) / 2
+    BB = (R2896 + R2936) / 2
+    HBD3000 = 1 - (BB / RC)
+    Rationale: Estimate of relative OH (measure of 3-um absorption strength)
+    Bands: R2657, R2697, R2896, R2936
+
+    Parameters
+    ----------
+    data : ndarray
+           (n,m,p) array
+
+    Returns
+    -------
+     : ndarray
+       the processed ndarray
+    """
+    wavelengths = [2657, 2697, 2896, 2936]
+    return utils.generic_func(data, wavelengths, func = pb.hbd3000, **kwargs)
