@@ -14,3 +14,6 @@ dependencies:
   - plio
   - matplotlib
   - pywavelets
+  - pip
+  - pip:
+    - pysptools
