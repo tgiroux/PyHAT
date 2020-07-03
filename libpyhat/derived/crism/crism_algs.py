@@ -833,7 +833,6 @@ def bd1900r2(data, **kwargs):
 
     return generic_func(data, wv, func = cf.bd1900r2_func, pass_wvs = True, **kwargs)
 
-# TODO:  bdi2000
 def bdi2000(data, **kwargs):
     """
     NAME: BDI2000
@@ -844,7 +843,59 @@ def bdi2000(data, **kwargs):
      (1 -  normalized radiances)
     RATIONALE: pyroxene abundance and particle size
     """
-    raise NotImplementedError
+    for band in data:
+        band[band==data.no_data_value] = 0
+
+    wvs = data.wavelengths
+
+    indexOf1300 = np.abs(wvs-1300).argmin()
+    indexOf2530 = np.abs(wvs-2530).argmin()
+    indexOf1660 = np.abs(wvs-1660).argmin()
+    indexOf2390 = np.abs(wvs-2390).argmin()
+
+    d, w, h = data.data.shape
+
+    pkwvs_subset = wvs[ (wvs>=1300)*(wvs<=1870) ]
+    pk_subset = data.loc[pkwvs_subset,:,:]
+    # 2darr with indices for max band at each pixel
+    peakR_i = np.argmax(pk_subset, axis=0)
+    peakR_i += indexOf1300
+
+    R2530 = data.loc[2530,:,:]
+    linear_fit = np.ones((d,w,h))
+    
+    for i in range(w):
+        for j in range(h):
+            peak_index = peakR_i[i][j]
+            peakR = data.data[peak_index][i][j] # store peak R val at each pixel
+            
+            slope = (R2530[i][j]-peakR)/(indexOf2530-peak_index) # rise/run
+
+            # fill values along linear fit
+            k = peak_index
+            while(k <= indexOf2530):
+                linear_fit[k][i][j] = slope*k + peakR
+                k += 1
+
+    # divide by linear fit
+    # bands outside of (R1660,R2390) are not affected by the division
+   
+
+   #  linear_fit[linear_fit<=0] = 1
+   
+    divided_cube = np.divide(data.data, linear_fit)
+    norm_cube = divided_cube[indexOf1660:indexOf2390,:,:]
+
+    # integrate over (1 - normalized radiances)
+    res = np.zeros((w,h))
+    for band in norm_cube:
+        res += 1 - band
+
+    '''
+    # set transparent values to 0
+    res[res==norm_cube.shape[0]] = 0
+'''
+    return res
 
 def bd2100(data, use_kernels = True, **kwargs):
     """
