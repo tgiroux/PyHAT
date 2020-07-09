@@ -1,7 +1,7 @@
 import numpy as np
 
 from . import crism_funcs as cf
-from ..utils import generic_func
+from ..utils import generic_func, arg_median
 
 
 def r770(data, **kwargs):
@@ -266,13 +266,15 @@ def bdi1000VIS(data, **kwargs):
       integrate over (1 -  normalized radiances)
     RATIONALE: crystalline Fe+2 or Fe+3 minerals
     """
-    denominator = rpeak1(data)
-    wvs = [833, 860, 892, 925, 951, 984, 1023]
-    subset = data.loc[wvs,:,:]
-    for i in subset:
-        i[i==data.no_data_value] = 0
+    peak = rpeak1(data)
+    wvs = data.wavelengths
+    kernels = {833: 5,
+               860: 5,
+               890: 5,
+               915: 5,
+               peak:5}
 
-    return cf.bdi1000VIS_func(subset, denominator)
+    return generic_func(data, wvs, func=cf.bdi1000VIS_func, pass_wvs=True, kernels=kernels, **kwargs)
 
 # TODO: bdi1000IR
 def bdi1000IR(data, **kwargs):
@@ -286,8 +288,26 @@ def bdi1000IR(data, **kwargs):
     RATIONALE: crystalline Fe+2 minerals; corrected for overlying\
     aerosol induced slope
     """
+    wvs = data.wavelengths
+    # medR A
+    A_mask = (wvs >= 1300) * (wvs <= 1870)
+    A_wvs = wvs[A_mask]
+    medRA = np.median(A_wvs)
 
-    raise NotImplementedError
+    # medR B
+    B_mask = (wvs >= 2430) * (wvs <= 2600)
+    B_wvs = wvs[B_mask]
+    medRB = np.median(B_wvs)
+
+    kernels = {1030: 5,
+               1050: 5,
+               1080: 5,
+               1150: 5,
+               1255: 5,
+               medRA:15,
+               medRB:15}
+
+    return generic_func(data, wvs, func=cf.bdi1000IR_func, pass_wvs=True, kernels=kernels, **kwargs)
 
 def r1300(data, **kwargs):
     """
@@ -843,59 +863,28 @@ def bdi2000(data, **kwargs):
      (1 -  normalized radiances)
     RATIONALE: pyroxene abundance and particle size
     """
-    for band in data:
-        band[band==data.no_data_value] = 0
-
     wvs = data.wavelengths
-
-    indexOf1300 = np.abs(wvs-1300).argmin()
-    indexOf2530 = np.abs(wvs-2530).argmin()
-    indexOf1660 = np.abs(wvs-1660).argmin()
-    indexOf2390 = np.abs(wvs-2390).argmin()
-
-    d, w, h = data.data.shape
-
-    pkwvs_subset = wvs[ (wvs>=1300)*(wvs<=1870) ]
-    pk_subset = data.loc[pkwvs_subset,:,:]
-    # 2darr with indices for max band at each pixel
-    peakR_i = np.argmax(pk_subset, axis=0)
-    peakR_i += indexOf1300
-
-    R2530 = data.loc[2530,:,:]
-    linear_fit = np.ones((d,w,h))
+    # peakR of 15
+    peak_mask = (wvs >= 1300) * (wvs <= 1870)
+    peak_wvs = wvs[peak_mask]
+    peakR = generic_func(data, peak_wvs, func = cf.rpeak1_func, pass_wvs = True, **kwargs)
     
-    for i in range(w):
-        for j in range(h):
-            peak_index = peakR_i[i][j]
-            peakR = data.data[peak_index][i][j] # store peak R val at each pixel
-            
-            slope = (R2530[i][j]-peakR)/(indexOf2530-peak_index) # rise/run
+    kernels = {1660: 5,
+               1815: 5,
+               2140: 5,
+               2210: 5,
+               2250: 5,
+               2290: 5,
+               2330: 5,
+               2350: 5,
+               2390: 5,
+               2430: 5,
+               2460: 5,
+               2530: 5,
+               peakR:15}
 
-            # fill values along linear fit
-            k = peak_index
-            while(k <= indexOf2530):
-                linear_fit[k][i][j] = slope*k + peakR
-                k += 1
 
-    # divide by linear fit
-    # bands outside of (R1660,R2390) are not affected by the division
-   
-
-   #  linear_fit[linear_fit<=0] = 1
-   
-    divided_cube = np.divide(data.data, linear_fit)
-    norm_cube = divided_cube[indexOf1660:indexOf2390,:,:]
-
-    # integrate over (1 - normalized radiances)
-    res = np.zeros((w,h))
-    for band in norm_cube:
-        res += 1 - band
-
-    '''
-    # set transparent values to 0
-    res[res==norm_cube.shape[0]] = 0
-'''
-    return res
+    return generic_func(data, peak_wvs, func=cf.bdi2000_func, pass_wvs=True, kernels=kernels, **kwargs)
 
 def bd2100(data, use_kernels = True, **kwargs):
     """

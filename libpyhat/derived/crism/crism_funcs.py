@@ -37,12 +37,40 @@ def rpeak1_func(data, wv):
         if derivation == 0:
             return wv[i]
 
+def medR_func(data):
+    return np.median(data, axis=0)
+
 
 def bdi1000VIS_func(data, rpeak1):
-    res = np.zeros(data[0].shape)
-    for r in data:
-        res += 1 - ( r / rpeak1 )
+    numerator = np.stack(data[:-1], axis=0)
+    rpeak1 = data[-1]
 
+    norm_cube = np.divide(numerator,rpeak1)
+    res = np.trapz(1-norm_cube, axis=0)
+    return res
+
+def bdi1000IR_func(data, wvs):
+    numerator = data[:-2]
+    medRA = data[-2] # ~wv1585
+    medRB = data[-1] # ~wv2513
+    
+    r1030_i = np.abs(wvs-1030).argmin()
+    r1255_i = np.abs(wvs-1255).argmin()
+    medRB_i = np.abs(wvs-2513).argmin()
+    medRA_i = np.abs(wvs-1585).argmin()
+    
+    rise = medRB - medRA
+    run = medRB_i - medRA_i
+
+    slope = rise/run
+    b = medRA - slope*medRA_i
+
+    fit1030 = slope*r1030_i + b
+    fit1255 = slope*r1255_i + b
+
+    linear_fit = np.linspace(fit1030, fit1255, len(numerator))
+    norm_cube = np.divide(numerator, linear_fit)
+    res = np.trapz(1-norm_cube, axis=0)
     return res
 
 def olivine_index2_func(bands):
@@ -193,6 +221,14 @@ def bd1900r2_func(bands, wv):
 
     return 1 - (numerator / denominator)
 #@@TODO bdi2000
+def bdi2000_func(bands, wv):
+    numerator = bands[:-2]
+    peakR = bands[-1]
+    R2530 = bands[-2]
+    linear_fit = np.linspace(peakR,R2530,len(numerator))
+    norm_cube = np.divide(numerator,linear_fit)
+    res = np.trapz(1-norm_cube, axis=0)
+    return res
 
 def bd2100_func(bands, wv):
     b1930, b2120, b2130, b2250 = bands
