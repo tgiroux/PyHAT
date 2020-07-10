@@ -94,9 +94,9 @@ def test_bdi1000IR(crism_img):
 
 def test_bdi2000(crism_img):
     res = crism_algs.bdi2000(crism_img)
-    expected = [[4.365261, 4.266644, 4.17272 ],
-                [4.083136, 3.997577, 3.915759],
-                [3.837426, 3.762347, 3.690311]]
+    expected = [[4.854457, 4.74465 , 4.640079],
+                [4.54035 , 4.445108, 4.354038],
+                [4.266852, 4.183294, 4.103126]]
     np.testing.assert_array_almost_equal(res, expected)
 
 def test_r1330(crism_img):

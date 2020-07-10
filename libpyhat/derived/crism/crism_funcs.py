@@ -38,31 +38,26 @@ def rpeak1_func(data, wv):
             return wv[i]
 
 def bdi1000VIS_func(data, wv):
-    numerator = np.stack(data[:-1], axis=0)
-    rpeak1 = data[-1]
+    *numerator, rpeak1 = data
 
     norm_cube = np.divide(numerator,rpeak1)
     res = np.trapz(1-norm_cube, axis=0)
     return res
 
 def bdi1000IR_func(data, wvs):
-    numerator = data[:-2]
-    medRA = data[-2] # ~wv1585
-    medRB = data[-1] # ~wv2513
+    *numerator, medRB, medRA = data
     
+    # get wavelength indices for slope calculation
     r1045_i = np.abs(wvs-1045).argmin()
     r1255_i = np.abs(wvs-1255).argmin()
     medRA_i = np.abs(wvs-1585).argmin()
     medRB_i = np.abs(wvs-2513).argmin()
 
-    rise = medRB - medRA
-    run = medRB_i - medRA_i
-
-    slope = rise/run
+    slope = compute_slope(medRB_i, medRA_i, medRB, medRA)
     b = medRA - slope*medRA_i
 
-    fit1045 = slope*r1045_i + b
-    fit1255 = slope*r1255_i + b
+    fit1045 = line_fit(slope, r1045_i, b)
+    fit1255 = line_fit(slope, r1255_i, b)
 
     linear_fit = np.linspace(fit1045, fit1255, len(numerator))
     norm_cube = np.divide(numerator, linear_fit)
@@ -216,14 +211,13 @@ def bd1900r2_func(bands, wv):
                           b2112 / rc2112 + b2120 / rc2120 + b2126 / rc2126)
 
     return 1 - (numerator / denominator)
-#@@TODO bdi2000
+
 def bdi2000_func(bands, wv):
-    numerator = bands[:-3]
-    peakR = bands[-1]
-    R2530 = bands[-2]
+    *numerator, peakR, R2530 = bands
     linear_fit = np.linspace(peakR,R2530,len(numerator))
     norm_cube = np.divide(numerator,linear_fit)
     res = np.trapz(1-norm_cube, axis=0)
+
     return res
 
 def bd2100_func(bands, wv):
