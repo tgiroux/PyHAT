@@ -82,14 +82,22 @@ def test_rpeak1(crism_img):
 
 def test_bdi1000VIS(crism_img):
     res = crism_algs.bdi1000VIS(crism_img)
-    expected = [[6.55059271, 6.53454245, 6.51849219],
-                [6.50244193, 6.48639167, 6.47034141],
-                [6.45429115, 6.43824089, 6.42219063]]
+    expected = np.zeros((3,3))
     np.testing.assert_array_almost_equal(res, expected)
 
 def test_bdi1000IR(crism_img):
-    with pytest.raises(NotImplementedError):
-        crism_algs.bdi1000IR(crism_img)
+    res = crism_algs.bdi1000IR(crism_img)
+    expected = [[7.03125 , 6.923077, 6.818182],
+                [6.716418, 6.617647, 6.521739],
+                [6.428571, 6.338028, 6.25    ]]
+    np.testing.assert_array_almost_equal(res, expected)
+
+def test_bdi2000(crism_img):
+    res = crism_algs.bdi2000(crism_img)
+    expected = [[4.365261, 4.266644, 4.17272 ],
+                [4.083136, 3.997577, 3.915759],
+                [3.837426, 3.762347, 3.690311]]
+    np.testing.assert_array_almost_equal(res, expected)
 
 def test_r1330(crism_img):
     res = crism_algs.r1330(crism_img)
@@ -102,10 +110,6 @@ def test_bd1300(crism_img):
                 [-2.04545455, -1.95652174, -1.875],
                 [-1.8, -1.73076923, -1.66666667]]
     np.testing.assert_array_almost_equal(res, expected)
-
-'''def test_ira(one_dim, wv_array, expected):
-    res = crism_algs.ira(crism_img)
-    assert False'''
 
 def test_olivine_index2(crism_img):
     res = crism_algs.olivine_index2(crism_img)
@@ -224,10 +228,6 @@ def test_bd1900r2(crism_img):
                 [-0.263207, -0.276156, -0.28639 ],
                 [-0.294437, -0.300702, -0.305506]]
     np.testing.assert_array_almost_equal(res, expected)
-
-def test_bdi2000(crism_img):
-    with pytest.raises(NotImplementedError):
-        crism_algs.bdi2000(crism_img)
 
 @pytest.mark.parametrize("use_kernels, expected", [
         (True, [[-0.9, -0.81818182, -0.75],

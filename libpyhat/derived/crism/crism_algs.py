@@ -1,7 +1,7 @@
 import numpy as np
 
 from . import crism_funcs as cf
-from ..utils import generic_func, arg_median
+from ..utils import generic_func
 
 
 def r770(data, **kwargs):
@@ -299,10 +299,16 @@ def bdi1000IR(data, **kwargs):
     B_wvs = wvs[B_mask]
     medRB = np.median(B_wvs)
 
-    kernels = {1030: 5,
-               1050: 5,
-               1080: 5,
+    kernels = {1045: 5,
+               1066: 5,
+               1087: 5,
+               1108: 5,
+               1129: 5,
                1150: 5,
+               1171: 5,
+               1192: 5,
+               1213: 5,
+               1234: 5,
                1255: 5,
                medRA:15,
                medRB:15}
