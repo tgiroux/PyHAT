@@ -37,10 +37,6 @@ def rpeak1_func(data, wv):
         if derivation == 0:
             return wv[i]
 
-def medR_func(data):
-    return np.median(data, axis=0)
-
-
 def bdi1000VIS_func(data, wv):
     numerator = np.stack(data[:-1], axis=0)
     rpeak1 = data[-1]
