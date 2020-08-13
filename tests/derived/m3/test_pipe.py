@@ -93,6 +93,11 @@ def test_twoum_ratio(m3_img):
                                                         [0.30769231, 0.35714286, 0.4],
                                                         [0.4375, 0.47058824, 0.5]]))
 
+def test_thermal_ratio(m3_img):
+    res = pipe.thermal_ratio(m3_img)
+    np.testing.assert_array_almost_equal(res, np.array([[0.1, 0.18181818, 0.25],
+                                                        [0.30769231, 0.35714286, 0.4],
+                                                        [0.4375, 0.47058824, 0.5]]))
 def test_twoum_slope(m3_img):
     res = pipe.twoum_slope(m3_img)
     delta = np.abs(np.sum(res - 0.009375))
