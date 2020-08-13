@@ -87,11 +87,6 @@ def test_r2780(m3_img):
     res = pipe.r2780(m3_img)
     np.testing.assert_array_almost_equal(res, np.arange(1,10).reshape((3,3)))
 
-def test_thermal_slope(m3_img):
-    res = pipe.thermal_slope(m3_img)
-    delta = np.abs(np.sum(res - 0.02045455))
-    assert delta <= 1e-6
-
 def test_twoum_ratio(m3_img):
     res = pipe.twoum_ratio(m3_img)
     np.testing.assert_array_almost_equal(res, np.array([[0.1, 0.18181818, 0.25],
