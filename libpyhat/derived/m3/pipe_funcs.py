@@ -26,14 +26,6 @@ def bdi_func(bands, wvs=[0,0]):
     return band_array / (((upper_array - lower_array)/ \
            (upper_bound - lower_bound)) * (y - lower_bound) + lower_array)
 
-def oneum_min_slope_func(bands):
-    R890, R1349 = np.min(bands), np.max(bands)
-    m = (R1349 - R890) / (1349 - 890)
-    x = np.array(bands) - R890
-    b = R890
-
-    return (m * x) + b
-
 def twoum_ratio_func(bands):
     R1578, R2538 = bands
 
