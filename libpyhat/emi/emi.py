@@ -1,8 +1,7 @@
-import numpy as np
 import pandas as pd
-
+import numpy as np
 from pysptools.eea import FIPPI, PPI, NFINDR, ATGP
-from libpyhat.data.spectra import Spectra
+from libpyhat.data.utils import tabular_to_cube
 
 def emi(data, emi_method, **kwargs):
     supported_methods = ("FIPPI", "PPI", "NFINDR", "ATGP")
@@ -16,13 +15,10 @@ def emi(data, emi_method, **kwargs):
         print(f"Unable to instantiate class from {emi_method}.")
         return 1
 
-    spectra = data['wvl'].to_numpy()
-    if len(spectra.shape) == 2:
-        spectra = np.expand_dims(spectra, 0)
+    spectra = tabular_to_cube(data)
 
     endmembers = method.extract(spectra, **kwargs)
     endmember_indices = [i[0] for i in method.get_idx()]
-    indices = np.zeros(spectra.shape[1], dtype=int)
+    indices = np.zeros(data.shape[0], dtype=int)
     indices[endmember_indices] = 1
-    data[("endmembers", emi_method)] = indices
     return endmember_indices
